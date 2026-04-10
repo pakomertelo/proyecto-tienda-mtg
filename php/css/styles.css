@@ -170,6 +170,16 @@ p {
     margin-top: auto;
 }
 
+.acciones-card form {
+    margin: 0;
+}
+
+.acciones-card .btn-carrito,
+.acciones-card .btn-deseados {
+    width: 100%;
+    min-height: 42px;
+}
+
 .selector-estrellas {
     display: flex;
     gap: 2px;
@@ -329,6 +339,26 @@ a {
 a:hover {
     color: #a5b4fc;
 }
+
+.paginacion {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.paginacion-info {
+    font-weight: 700;
+    color: var(--texto, #e2e8f0);
+}
+
+.btn-paginacion {
+    min-width: 110px;
+    text-align: center;
+}
+
 
 .error { color: #f87171; font-weight: 600; }
 .ok { color: #34d399; font-weight: 600; }
