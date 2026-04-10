@@ -77,9 +77,8 @@ function textoValoracion(array $resumen): string
     $media = (float) ($resumen['media'] ?? 0);
 
     if ($total === 0) {
-        return 'Sin valorar';
+        return '☆☆☆☆☆ (0)';
     }
 
-    $mediaRedondeada = round($media, 1);
-    return $total . ' voto(s) - ' . estrellasHtml($mediaRedondeada) . ' (' . number_format($mediaRedondeada, 1, ',', '.') . '/5)';
+    return estrellasHtml($media) . ' (' . $total . ')';
 }
