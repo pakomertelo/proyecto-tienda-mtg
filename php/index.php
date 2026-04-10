@@ -1,6 +1,6 @@
 <?php
-    session_start();
-    require_once __DIR__ . '/valoraciones.php';
+session_start();
+require_once __DIR__ . '/valoraciones.php';
 
 if (!isset($_SESSION['username'])) {
     header('Location: login.php');
@@ -38,7 +38,10 @@ $textos = [
         'eliminar' => 'Eliminar',
         'total_label' => 'Total: ',
         'compra_finalizada' => 'Compra finalizada el ',
-        'ultima_compra' => 'Última compra: '
+        'ultima_compra' => 'Última compra: ',
+        'paginacion_anterior' => 'Anterior',
+        'paginacion_siguiente' => 'Siguiente',
+        'paginacion_info' => 'Página %d de %d'
     ],
     'en' => [
         'titulo' => 'Magic the Gathering Store',
@@ -66,7 +69,10 @@ $textos = [
         'eliminar' => 'Remove',
         'total_label' => 'Total: ',
         'compra_finalizada' => 'Purchase completed on ',
-        'ultima_compra' => 'Last purchase: '
+        'ultima_compra' => 'Last purchase: ',
+        'paginacion_anterior' => 'Previous',
+        'paginacion_siguiente' => 'Next',
+        'paginacion_info' => 'Page %d of %d'
     ]
 ];
 
@@ -80,45 +86,52 @@ if ($rol === 'admin') {
     $mensajeBienvenida = $t['bienvenida_admin'];
 }
 
-    $cartas = [
-        ['id' => 1, 'nombre' => 'Aloy, Savior of Meridian', 'precio' => 29.50, 'imagen' => 'Aloy, Savior of Meridian.jpg'],
-        ['id' => 2, 'nombre' => 'Cooper Myr (Grazer)', 'precio' => 3.00, 'imagen' => 'Cooper Myr (Grazer).png'],
-        ['id' => 3, 'nombre' => 'Cultivate', 'precio' => 1.20, 'imagen' => 'Cultivate.png'],
-        ['id' => 4, 'nombre' => 'Cyberdrive Awakener (Dreadwing)', 'precio' => 2.80, 'imagen' => 'Cyberdrive Awakener (Dreadwing).png'],
-        ['id' => 5, 'nombre' => 'Cyberman Patrol (Sawtooth)', 'precio' => 4.50, 'imagen' => 'Cyberman Patrol (Sawtooth).png'],
-        ['id' => 6, 'nombre' => 'Darksteel Juggernaut (Shellsnaper)', 'precio' => 0.80, 'imagen' => 'Darksteel Juggernaut (Shellsnaper).jpg'],
-        ['id' => 7, 'nombre' => 'Diamond Weapon (Tallneck)', 'precio' => 2.00, 'imagen' => 'Diamond Weapon (Tallneck).png'],
-        ['id' => 8, 'nombre' => "Garruk's Uprising (Faro Plague)", 'precio' => 5.00, 'imagen' => 'Garruk’s Uprising (Faro Plague).png'],
-        ['id' => 9, 'nombre' => 'Guardian Project (Cauldron SIGMA)', 'precio' => 12.00, 'imagen' => 'Guardian Project (Cauldron SIGMA).png'],
-        ['id' => 10, 'nombre' => 'Inkwell Leviathan (Stalker)', 'precio' => 3.50, 'imagen' => 'Inkwell Leviathan (Stalker).png'],
-        ['id' => 11, 'nombre' => 'Kappa Cannnoneer (Rockbreaker)', 'precio' => 30.00, 'imagen' => 'Kappa Cannoneer (Rockbreaker).png'],
-        ['id' => 12, 'nombre' => "Kodama's Reach (Mark of the Seeker)", 'precio' => 25.00, 'imagen' => 'Kodama’s Reach (Mark of the Seeker).png'],
-        ['id' => 13, 'nombre' => 'Master of Eterium (Sylens, Cherised Wanderer)', 'precio' => 2.20, 'imagen' => 'Master of Eterium (Sylens, Cherished Wanderer).png'],
-        ['id' => 14, 'nombre' => 'Myr Galvanizer (Longleg)', 'precio' => 1.50, 'imagen' => 'Myr Galvanizer (Longleg).png'],
-        ['id' => 15, 'nombre' => 'Phyrexian Metamorph (Specter)', 'precio' => 8.00, 'imagen' => 'Phyrexian Metamorph (Specter).png'],
-        ['id' => 16, 'nombre' => 'Roaming Throne (Deathbringer)', 'precio' => 8.00, 'imagen' => 'Roaming Throne (Deathbringer).png'],
-        ['id' => 17, 'nombre' => 'Silver Myr (Scrapper)', 'precio' => 8.00, 'imagen' => 'Silver Myr (Scrapper).png'],
-        ['id' => 18, 'nombre' => 'Sol Ring (Focus)', 'precio' => 8.00, 'imagen' => 'Sol Ring (Focus).png'],
-        ['id' => 19, 'nombre' => 'Steel Overseer (Redeye Watcher)', 'precio' => 8.00, 'imagen' => 'Steel Overseer (Redeye Watcher).png'],
-        ['id' => 20, 'nombre' => 'Verdurous Gearhulk (Tremortusk)', 'precio' => 8.00, 'imagen' => 'Verdurous Gearhulk (Tremortusk).png'],
-        ['id' => 21, 'nombre' => 'Webspinner Cuff (Corruptor)', 'precio' => 8.00, 'imagen' => 'Webspinner Cuff (Corruptor).png'],
-        ['id' => 22, 'nombre' => 'Wurmcoil Engine (Slitherfang)', 'precio' => 8.00, 'imagen' => 'Wurmcoil Engine (Slitherfang).png']
-    ];
+$directorioImagenes = realpath(__DIR__ . '/../img');
+$cartas = [];
 
-    $resumenValoraciones = [];
-    $votosUsuario = [];
-    try {
-        $pdo = obtenerConexion();
-        $resumenValoraciones = obtenerResumenValoraciones($pdo);
-        foreach ($cartas as $carta) {
-            $votosUsuario[$carta['id']] = usuarioYaVoto($pdo, (int) $carta['id'], $usuario);
-        }
-    } catch (Throwable $e) {
-        $resumenValoraciones = [];
-        foreach ($cartas as $carta) {
-            $votosUsuario[$carta['id']] = false;
-        }
+if ($directorioImagenes !== false) {
+    $imagenes = glob($directorioImagenes . '/*.{png,jpg,jpeg,webp}', GLOB_BRACE) ?: [];
+    natcasesort($imagenes);
+
+    $id = 1;
+    foreach ($imagenes as $rutaImagen) {
+        $archivo = basename($rutaImagen);
+        $nombre = pathinfo($archivo, PATHINFO_FILENAME);
+
+        $precioBase = (abs(crc32($archivo)) % 4500) / 100 + 1;
+        $precio = round($precioBase, 2);
+
+        $cartas[] = [
+            'id' => $id++,
+            'nombre' => $nombre,
+            'precio' => $precio,
+            'imagen' => $archivo
+        ];
     }
+}
+
+$porPagina = 20;
+$totalCartas = count($cartas);
+$totalPaginas = max(1, (int) ceil($totalCartas / $porPagina));
+$paginaActual = isset($_GET['pagina']) ? (int) $_GET['pagina'] : 1;
+$paginaActual = max(1, min($paginaActual, $totalPaginas));
+$inicio = ($paginaActual - 1) * $porPagina;
+$cartasPagina = array_slice($cartas, $inicio, $porPagina);
+
+$resumenValoraciones = [];
+$votosUsuario = [];
+try {
+    $pdo = obtenerConexion();
+    $resumenValoraciones = obtenerResumenValoraciones($pdo);
+    foreach ($cartasPagina as $carta) {
+        $votosUsuario[$carta['id']] = usuarioYaVoto($pdo, (int) $carta['id'], $usuario);
+    }
+} catch (Throwable $e) {
+    $resumenValoraciones = [];
+    foreach ($cartasPagina as $carta) {
+        $votosUsuario[$carta['id']] = false;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars($idioma); ?>">
@@ -141,12 +154,12 @@ if ($rol === 'admin') {
         </nav>
 
         <hr>
-        <h2><?php echo sprintf($t['cartas_disponibles'], count($cartas)); ?></h2>
+        <h2><?php echo sprintf($t['cartas_disponibles'], $totalCartas); ?></h2>
 
         <div class="productos-grid">
-            <?php foreach ($cartas as $carta): ?>
+            <?php foreach ($cartasPagina as $carta): ?>
                 <article class="producto-card">
-                    <img src="../img/<?php echo $carta['imagen']; ?>"
+                    <img src="../img/<?php echo rawurlencode($carta['imagen']); ?>"
                         alt="<?php echo htmlspecialchars($carta['nombre']); ?>"
                         class="producto-img">
 
@@ -155,18 +168,18 @@ if ($rol === 'admin') {
 
                     <p id="valoracion-<?php echo $carta['id']; ?>" class="valoracion-texto">
                         <?php
-                            $resumen = $resumenValoraciones[$carta['id']] ?? ['total_votos' => 0, 'media' => 0];
-                            echo htmlspecialchars(textoValoracion($resumen));
+                        $resumen = $resumenValoraciones[$carta['id']] ?? ['total_votos' => 0, 'media' => 0];
+                        echo htmlspecialchars(textoValoracion($resumen));
                         ?>
                     </p>
                     <form class="form-voto" data-id="<?php echo $carta['id']; ?>">
                         <div class="selector-estrellas">
                             <?php for ($i = 1; $i <= 5; $i++): ?>
                                 <button type="button"
-                                        class="estrella-voto"
-                                        data-voto="<?php echo $i; ?>"
-                                        <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>
-                                        title="<?php echo $i; ?> estrella(s)">★</button>
+                                    class="estrella-voto"
+                                    data-voto="<?php echo $i; ?>"
+                                    <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>
+                                    title="<?php echo $i; ?> estrella(s)">★</button>
                             <?php endfor; ?>
                         </div>
                     </form>
@@ -176,12 +189,26 @@ if ($rol === 'admin') {
                         <form action="anadirDeseo.php" method="post">
                             <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($carta['nombre']); ?>">
                             <input type="hidden" name="precio" value="<?php echo $carta['precio']; ?>">
-                            <button type="submit"><?php echo $t['anadir_deseados']; ?></button>
+                            <button type="submit" class="btn-deseados"><?php echo $t['anadir_deseados']; ?></button>
                         </form>
                     </div>
                 </article>
             <?php endforeach; ?>
         </div>
+
+        <?php if ($totalPaginas > 1): ?>
+            <nav class="paginacion" aria-label="Paginación de productos">
+                <?php if ($paginaActual > 1): ?>
+                    <a class="btn btn-paginacion" href="?pagina=<?php echo $paginaActual - 1; ?>"><?php echo $t['paginacion_anterior']; ?></a>
+                <?php endif; ?>
+
+                <span class="paginacion-info"><?php echo sprintf($t['paginacion_info'], $paginaActual, $totalPaginas); ?></span>
+
+                <?php if ($paginaActual < $totalPaginas): ?>
+                    <a class="btn btn-paginacion" href="?pagina=<?php echo $paginaActual + 1; ?>"><?php echo $t['paginacion_siguiente']; ?></a>
+                <?php endif; ?>
+            </nav>
+        <?php endif; ?>
     </div>
 
     <button id="btn-toggle-carrito" type="button" class="btn-toggle-carrito"><?php echo $t['carrito']; ?></button>
@@ -196,17 +223,17 @@ if ($rol === 'admin') {
 
     <script>
     window.textosCarrito = <?php echo json_encode([
-            'carrito_vacio' => $t['carrito_vacio'],
-            'producto' => $t['producto'],
-            'precio' => $t['precio_corto'],
-            'cantidad' => $t['cantidad'],
-            'subtotal' => $t['subtotal'],
-            'acciones' => $t['acciones'],
-            'eliminar' => $t['eliminar'],
-            'total' => $t['total_label'],
-            'compra_finalizada' => $t['compra_finalizada'],
-            'ultima_compra' => $t['ultima_compra']
-        ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
+                                'carrito_vacio' => $t['carrito_vacio'],
+                                'producto' => $t['producto'],
+                                'precio' => $t['precio_corto'],
+                                'cantidad' => $t['cantidad'],
+                                'subtotal' => $t['subtotal'],
+                                'acciones' => $t['acciones'],
+                                'eliminar' => $t['eliminar'],
+                                'total' => $t['total_label'],
+                                'compra_finalizada' => $t['compra_finalizada'],
+                                'ultima_compra' => $t['ultima_compra']
+                            ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
     </script>
 
     <script src="js/tienda.js"></script>
