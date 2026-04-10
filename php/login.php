@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once __DIR__ . '/db.php';
 
     $idioma = $_COOKIE['idioma'] ?? 'es';
     $tema = $_COOKIE['tema'] ?? 'oscuro';
@@ -41,6 +42,23 @@
 
     $error = '';
 
+    function asegurarUsuarioEnBD(string $usuario, string $rol): void
+    {
+        try {
+            $pdo = obtenerConexion();
+            $sql = 'INSERT INTO usuarios(usuario, password, rol) VALUES(:usuario, :password, :rol)
+                    ON DUPLICATE KEY UPDATE rol = VALUES(rol)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':usuario' => $usuario,
+                ':password' => '1234',
+                ':rol' => $rol,
+            ]);
+        } catch (Throwable $e) {
+            // Si la BD no está preparada todavía, no bloqueamos el login.
+        }
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario = trim($_POST['username'] ?? '');
         $password = trim($_POST['password'] ?? '');
@@ -48,11 +66,13 @@
         if ($usuario === 'admin' && $password === '1234') {
             $_SESSION['username'] = 'admin';
             $_SESSION['rol'] = 'admin';
+            asegurarUsuarioEnBD('admin', 'admin');
             header('Location: index.php');
             exit;
         } elseif (!empty($usuario) && !empty($password)) {
             $_SESSION['username'] = $usuario;
             $_SESSION['rol'] = 'cliente';
+            asegurarUsuarioEnBD($usuario, 'cliente');
             header('Location: index.php');
             exit;
         } else {
