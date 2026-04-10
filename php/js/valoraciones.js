@@ -38,6 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             estrella.addEventListener('mouseenter', () => {
+                if (estrella.disabled) {
+                    return;
+                }
                 const valor = parseInt(estrella.dataset.voto, 10);
                 estrellas.forEach((btn) => {
                     btn.classList.toggle('activa', parseInt(btn.dataset.voto, 10) <= valor);
