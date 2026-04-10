@@ -91,26 +91,23 @@ function pintarCarrito() {
         return;
     }
 
-    const tabla = document.createElement('table');
-    tabla.classList.add('tabla-productos');
-    const head = document.createElement('thead');
-    head.innerHTML = `<tr><th>${textos.producto}</th><th>${textos.precio}</th><th>${textos.cantidad}</th><th>${textos.subtotal}</th><th>${textos.acciones}</th></tr>`;
-    tabla.appendChild(head);
+    const lista = document.createElement('div');
+    lista.classList.add('carrito-items');
 
-    const cuerpo = document.createElement('tbody');
     carrito.forEach(item => {
-        const fila = document.createElement('tr');
+        const fila = document.createElement('div');
+        fila.classList.add('carrito-item');
         fila.innerHTML = `
-            <td>${item.nombre}</td>
-            <td>${item.precio.toFixed(2)} €</td>
-            <td><input type="number" min="1" value="${item.cantidad}" data-producto="${item.nombre}" class="input-cantidad"></td>
-            <td>${item.subtotal ? item.subtotal().toFixed(2) : (item.precio * item.cantidad).toFixed(2)} €</td>
-            <td><button class="btn-eliminar" data-producto="${item.nombre}">${textos.eliminar}</button></td>
+            <p class="carrito-item-nombre">${item.nombre}</p>
+            <p class="carrito-item-precio">${item.precio.toFixed(2)} € x ${item.cantidad}</p>
+            <div class="carrito-item-acciones">
+                <input type="number" min="1" value="${item.cantidad}" data-producto="${item.nombre}" class="input-cantidad">
+                <button class="btn-eliminar" data-producto="${item.nombre}">${textos.eliminar}</button>
+            </div>
         `;
-        cuerpo.appendChild(fila);
+        lista.appendChild(fila);
     });
-    tabla.appendChild(cuerpo);
-    listaCarrito.appendChild(tabla);
+    listaCarrito.appendChild(lista);
 }
 
 function actualizarTotal() {
