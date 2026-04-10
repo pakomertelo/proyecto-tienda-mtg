@@ -278,6 +278,17 @@ a:hover {
     color: #38bdf8;
 }
 
+.valoracion-texto {
+    margin: 0 0 10px;
+    font-weight: 600;
+}
+
+.form-voto {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
 /* Temas */
 .claro {
     --fondo: #0f172a;
