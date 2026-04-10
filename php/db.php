@@ -7,10 +7,10 @@ function obtenerConexion(): PDO
         return $pdo;
     }
 
-    $host = getenv('DB_HOST') ?: '127.0.0.1';
-    $bd = getenv('DB_NAME') ?: 'tienda_mtg';
-    $usuario = getenv('DB_USER') ?: 'root';
-    $password = getenv('DB_PASS') ?: '';
+    $host = '127.0.0.1';
+    $bd = 'tienda_mtg';
+    $usuario = 'root';
+    $password = '';
 
     $dsn = "mysql:host=$host;dbname=$bd;charset=utf8mb4";
     $opciones = [

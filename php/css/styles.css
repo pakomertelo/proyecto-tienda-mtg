@@ -129,12 +129,11 @@ p {
 }
 
 .producto-card {
-    background: #ffffff;
-    color: #111827;
-    border: 1px solid #e5e7eb;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.10);
     border-radius: 14px;
     padding: 14px;
-    box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
+    box-shadow: var(--sombra-suave);
 }
 
 .producto-img {
@@ -147,7 +146,6 @@ p {
 
 .precio-card {
     font-weight: 700;
-    color: #dc2626;
     margin: 6px 0 8px;
 }
 
@@ -155,28 +153,6 @@ p {
     display: grid;
     gap: 8px;
     margin-top: 10px;
-}
-
-.selector-estrellas {
-    display: flex;
-    gap: 2px;
-    margin-bottom: 10px;
-}
-
-.selector-estrellas .estrella-voto {
-    border: none;
-    background: transparent;
-    color: #94a3b8;
-    font-size: 1.2rem;
-    padding: 0;
-    box-shadow: none;
-    cursor: pointer;
-}
-
-.selector-estrellas .estrella-voto.activa,
-.selector-estrellas .estrella-voto:hover {
-    color: #f59e0b;
-    transform: none;
 }
 
 .tabla-productos {
@@ -333,9 +309,8 @@ a:hover {
     width: 360px;
     height: 100vh;
     overflow-y: auto;
-    background: #ffffff;
-    color: #111827;
-    border-left: 1px solid #d1d5db;
+    background: rgba(15, 23, 42, 0.95);
+    border-left: 1px solid rgba(255, 255, 255, 0.10);
     padding: 16px;
     z-index: 25;
     transition: right 0.25s ease;
@@ -343,10 +318,6 @@ a:hover {
 
 .carrito-lateral.abierto {
     right: 0;
-}
-
-.carrito-lateral h3 {
-    color: #111827;
 }
 
 #carrito-lista p {
@@ -365,50 +336,6 @@ a:hover {
     margin-top: 10px;
     font-weight: 600;
     color: #38bdf8;
-}
-
-.carrito-items {
-    display: grid;
-    gap: 8px;
-}
-
-.carrito-item {
-    border: 1px solid #e5e7eb;
-    border-radius: 10px;
-    padding: 8px;
-    background: #f8fafc;
-}
-
-.carrito-item-nombre {
-    font-size: 0.9rem;
-    font-weight: 600;
-    margin: 0;
-}
-
-.carrito-item-precio {
-    font-size: 0.85rem;
-    margin: 4px 0;
-    color: #334155;
-}
-
-.carrito-item-acciones {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-}
-
-.carrito-item-acciones .input-cantidad {
-    width: 60px;
-    padding: 6px;
-}
-
-.carrito-item-acciones .btn-eliminar {
-    padding: 6px 8px;
-    font-size: 0.8rem;
-}
-
-.valoracion-texto {
-    color: #111827;
 }
 
 .valoracion-texto {
