@@ -1,5 +1,6 @@
 <?php
     session_start();
+    require_once __DIR__ . '/valoraciones.php';
 
     if (!isset($_SESSION['username'])) {
         header('Location: login.php');
@@ -80,29 +81,44 @@
     }
 
     $cartas = [
-        ['nombre' => 'Aloy, Savior of Meridian', 'precio' => 29.50, 'imagen' => 'Aloy, Savior of Meridian.jpg'],
-        ['nombre' => 'Cooper Myr (Grazer)', 'precio' => 3.00, 'imagen' => 'Cooper Myr (Grazer).png'],
-        ['nombre' => 'Cultivate', 'precio' => 1.20, 'imagen' => 'Cultivate.png'],
-        ['nombre' => 'Cyberdrive Awakener (Dreadwing)', 'precio' => 2.80, 'imagen' => 'Cyberdrive Awakener (Dreadwing).png'],
-        ['nombre' => 'Cyberman Patrol (Sawtooth)', 'precio' => 4.50, 'imagen' => 'Cyberman Patrol (Sawtooth).png'],
-        ['nombre' => 'Darksteel Juggernaut (Shellsnaper)', 'precio' => 0.80, 'imagen' => 'Darksteel Juggernaut (Shellsnaper).jpg'],
-        ['nombre' => 'Diamond Weapon (Tallneck)', 'precio' => 2.00, 'imagen' => 'Diamond Weapon (Tallneck).png'],
-        ['nombre' => "Garruk's Uprising (Faro Plague)", 'precio' => 5.00, 'imagen' => 'Garruk’s Uprising (Faro Plague).png'],
-        ['nombre' => 'Guardian Project (Cauldron SIGMA)', 'precio' => 12.00, 'imagen' => 'Guardian Project (Cauldron SIGMA).png'],
-        ['nombre' => 'Inkwell Leviathan (Stalker)', 'precio' => 3.50, 'imagen' => 'Inkwell Leviathan (Stalker).png'],
-        ['nombre' => 'Kappa Cannnoneer (Rockbreaker)', 'precio' => 30.00, 'imagen' => 'Kappa Cannoneer (Rockbreaker).png'],
-        ['nombre' => "Kodama's Reach (Mark of the Seeker)", 'precio' => 25.00, 'imagen' => 'Kodama’s Reach (Mark of the Seeker).png'],
-        ['nombre' => 'Master of Eterium (Sylens, Cherised Wanderer)', 'precio' => 2.20, 'imagen' => 'Master of Eterium (Sylens, Cherished Wanderer).png'],
-        ['nombre' => 'Myr Galvanizer (Longleg)', 'precio' => 1.50, 'imagen' => 'Myr Galvanizer (Longleg).png'],
-        ['nombre' => 'Phyrexian Metamorph (Specter)', 'precio' => 8.00, 'imagen' => 'Phyrexian Metamorph (Specter).png'],
-        ['nombre' => 'Roaming Throne (Deathbringer)', 'precio' => 8.00, 'imagen' => 'Roaming Throne (Deathbringer).png'],
-        ['nombre' => 'Silver Myr (Scrapper)', 'precio' => 8.00, 'imagen' => 'Silver Myr (Scrapper).png'],
-        ['nombre' => 'Sol Ring (Focus)', 'precio' => 8.00, 'imagen' => 'Sol Ring (Focus).png'],
-        ['nombre' => 'Steel Overseer (Redeye Watcher)', 'precio' => 8.00, 'imagen' => 'Steel Overseer (Redeye Watcher).png'],
-        ['nombre' => 'Verdurous Gearhulk (Tremortusk)', 'precio' => 8.00, 'imagen' => 'Verdurous Gearhulk (Tremortusk).png'],
-        ['nombre' => 'Webspinner Cuff (Corruptor)', 'precio' => 8.00, 'imagen' => 'Webspinner Cuff (Corruptor).png'],
-        ['nombre' => 'Wurmcoil Engine (Slitherfang)', 'precio' => 8.00, 'imagen' => 'Wurmcoil Engine (Slitherfang).png']
+        ['id' => 1, 'nombre' => 'Aloy, Savior of Meridian', 'precio' => 29.50, 'imagen' => 'Aloy, Savior of Meridian.jpg'],
+        ['id' => 2, 'nombre' => 'Cooper Myr (Grazer)', 'precio' => 3.00, 'imagen' => 'Cooper Myr (Grazer).png'],
+        ['id' => 3, 'nombre' => 'Cultivate', 'precio' => 1.20, 'imagen' => 'Cultivate.png'],
+        ['id' => 4, 'nombre' => 'Cyberdrive Awakener (Dreadwing)', 'precio' => 2.80, 'imagen' => 'Cyberdrive Awakener (Dreadwing).png'],
+        ['id' => 5, 'nombre' => 'Cyberman Patrol (Sawtooth)', 'precio' => 4.50, 'imagen' => 'Cyberman Patrol (Sawtooth).png'],
+        ['id' => 6, 'nombre' => 'Darksteel Juggernaut (Shellsnaper)', 'precio' => 0.80, 'imagen' => 'Darksteel Juggernaut (Shellsnaper).jpg'],
+        ['id' => 7, 'nombre' => 'Diamond Weapon (Tallneck)', 'precio' => 2.00, 'imagen' => 'Diamond Weapon (Tallneck).png'],
+        ['id' => 8, 'nombre' => "Garruk's Uprising (Faro Plague)", 'precio' => 5.00, 'imagen' => 'Garruk’s Uprising (Faro Plague).png'],
+        ['id' => 9, 'nombre' => 'Guardian Project (Cauldron SIGMA)', 'precio' => 12.00, 'imagen' => 'Guardian Project (Cauldron SIGMA).png'],
+        ['id' => 10, 'nombre' => 'Inkwell Leviathan (Stalker)', 'precio' => 3.50, 'imagen' => 'Inkwell Leviathan (Stalker).png'],
+        ['id' => 11, 'nombre' => 'Kappa Cannnoneer (Rockbreaker)', 'precio' => 30.00, 'imagen' => 'Kappa Cannoneer (Rockbreaker).png'],
+        ['id' => 12, 'nombre' => "Kodama's Reach (Mark of the Seeker)", 'precio' => 25.00, 'imagen' => 'Kodama’s Reach (Mark of the Seeker).png'],
+        ['id' => 13, 'nombre' => 'Master of Eterium (Sylens, Cherised Wanderer)', 'precio' => 2.20, 'imagen' => 'Master of Eterium (Sylens, Cherished Wanderer).png'],
+        ['id' => 14, 'nombre' => 'Myr Galvanizer (Longleg)', 'precio' => 1.50, 'imagen' => 'Myr Galvanizer (Longleg).png'],
+        ['id' => 15, 'nombre' => 'Phyrexian Metamorph (Specter)', 'precio' => 8.00, 'imagen' => 'Phyrexian Metamorph (Specter).png'],
+        ['id' => 16, 'nombre' => 'Roaming Throne (Deathbringer)', 'precio' => 8.00, 'imagen' => 'Roaming Throne (Deathbringer).png'],
+        ['id' => 17, 'nombre' => 'Silver Myr (Scrapper)', 'precio' => 8.00, 'imagen' => 'Silver Myr (Scrapper).png'],
+        ['id' => 18, 'nombre' => 'Sol Ring (Focus)', 'precio' => 8.00, 'imagen' => 'Sol Ring (Focus).png'],
+        ['id' => 19, 'nombre' => 'Steel Overseer (Redeye Watcher)', 'precio' => 8.00, 'imagen' => 'Steel Overseer (Redeye Watcher).png'],
+        ['id' => 20, 'nombre' => 'Verdurous Gearhulk (Tremortusk)', 'precio' => 8.00, 'imagen' => 'Verdurous Gearhulk (Tremortusk).png'],
+        ['id' => 21, 'nombre' => 'Webspinner Cuff (Corruptor)', 'precio' => 8.00, 'imagen' => 'Webspinner Cuff (Corruptor).png'],
+        ['id' => 22, 'nombre' => 'Wurmcoil Engine (Slitherfang)', 'precio' => 8.00, 'imagen' => 'Wurmcoil Engine (Slitherfang).png']
     ];
+
+    $resumenValoraciones = [];
+    $votosUsuario = [];
+    try {
+        $pdo = obtenerConexion();
+        $resumenValoraciones = obtenerResumenValoraciones($pdo);
+        foreach ($cartas as $carta) {
+            $votosUsuario[$carta['id']] = usuarioYaVoto($pdo, (int) $carta['id'], $usuario);
+        }
+    } catch (Throwable $e) {
+        $resumenValoraciones = [];
+        foreach ($cartas as $carta) {
+            $votosUsuario[$carta['id']] = false;
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars($idioma); ?>">
@@ -132,6 +148,7 @@
                         <th><?php echo $t['foto']; ?></th>
                         <th><?php echo $t['nombre_carta']; ?></th>
                         <th><?php echo $t['precio']; ?></th>
+                        <th>Valoración</th>
                         <th><?php echo $t['carrito']; ?></th>
                         <th><?php echo $t['deseos']; ?></th>
                     </tr>
@@ -146,6 +163,24 @@
                             </td>
                             <td><?php echo htmlspecialchars($carta['nombre']); ?></td>
                             <td><?php echo number_format($carta['precio'], 2, ',', '.'); ?></td>
+                            <td>
+                                <p id="valoracion-<?php echo $carta['id']; ?>" class="valoracion-texto">
+                                    <?php
+                                        $resumen = $resumenValoraciones[$carta['id']] ?? ['total_votos' => 0, 'media' => 0];
+                                        echo htmlspecialchars(textoValoracion($resumen));
+                                    ?>
+                                </p>
+                                <form class="form-voto" data-id="<?php echo $carta['id']; ?>">
+                                    <select name="cantidad" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>
+                                        <option value="1">1 ★</option>
+                                        <option value="2">2 ★</option>
+                                        <option value="3">3 ★</option>
+                                        <option value="4">4 ★</option>
+                                        <option value="5" selected>5 ★</option>
+                                    </select>
+                                    <button type="submit" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>Votar</button>
+                                </form>
+                            </td>
                             <td>
                                 <button type="button" class="btn-carrito" data-nombre="<?php echo htmlspecialchars($carta['nombre']); ?>" data-precio="<?php echo $carta['precio']; ?>"><?php echo $t['anadir_carrito']; ?></button>
                             </td>
@@ -187,5 +222,6 @@
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
     </script>
     <script src="js/tienda.js"></script>
+    <script src="js/valoraciones.js"></script>
 </body>
 </html>
