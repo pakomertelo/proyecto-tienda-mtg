@@ -28,6 +28,8 @@ const totalCarrito = document.getElementById('carrito-total');
 const mensajeCompra = document.getElementById('mensaje-compra');
 const btnVaciar = document.getElementById('btn-vaciar');
 const btnFinalizar = document.getElementById('btn-finalizar');
+const btnToggleCarrito = document.getElementById('btn-toggle-carrito');
+const panelCarrito = document.getElementById('carrito-section');
 const textos = window.textosCarrito || {
     carrito_vacio: 'Carrito vacío.',
     producto: 'Producto',
@@ -166,6 +168,11 @@ function aplicarEventos() {
 
     btnVaciar.addEventListener('click', vaciarCarrito);
     btnFinalizar.addEventListener('click', finalizarCompra);
+    if (btnToggleCarrito && panelCarrito) {
+        btnToggleCarrito.addEventListener('click', () => {
+            panelCarrito.classList.toggle('abierto');
+        });
+    }
 }
 
 function cargarUltimaCompra() {

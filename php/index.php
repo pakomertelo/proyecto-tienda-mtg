@@ -197,15 +197,45 @@
             </table>
         </div>
 
-        <section id="carrito-section">
-            <h3><?php echo $t['carrito']; ?></h3>
-            <div id="carrito-lista"></div>
-            <p id="carrito-total"><?php echo $t['total_label']; ?>0 €</p>
-            <button id="btn-vaciar" type="button"><?php echo $t['vaciar']; ?></button>
-            <button id="btn-finalizar" type="button"><?php echo $t['finalizar']; ?></button>
-            <p id="mensaje-compra"></p>
-        </section>
+                    <p id="valoracion-<?php echo $carta['id']; ?>" class="valoracion-texto">
+                        <?php
+                            $resumen = $resumenValoraciones[$carta['id']] ?? ['total_votos' => 0, 'media' => 0];
+                            echo htmlspecialchars(textoValoracion($resumen));
+                        ?>
+                    </p>
+                    <form class="form-voto" data-id="<?php echo $carta['id']; ?>">
+                        <select name="cantidad" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>
+                            <option value="1">1 ★</option>
+                            <option value="2">2 ★</option>
+                            <option value="3">3 ★</option>
+                            <option value="4">4 ★</option>
+                            <option value="5" selected>5 ★</option>
+                        </select>
+                        <button type="submit" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>Votar</button>
+                    </form>
+
+                    <div class="acciones-card">
+                        <button type="button" class="btn-carrito" data-nombre="<?php echo htmlspecialchars($carta['nombre']); ?>" data-precio="<?php echo $carta['precio']; ?>"><?php echo $t['anadir_carrito']; ?></button>
+                        <form action="anadirDeseo.php" method="post">
+                            <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($carta['nombre']); ?>">
+                            <input type="hidden" name="precio" value="<?php echo $carta['precio']; ?>">
+                            <button type="submit"><?php echo $t['anadir_deseados']; ?></button>
+                        </form>
+                    </div>
+                </article>
+            <?php endforeach; ?>
+        </div>
     </div>
+
+    <button id="btn-toggle-carrito" type="button" class="btn-toggle-carrito"><?php echo $t['carrito']; ?></button>
+    <aside id="carrito-section" class="carrito-lateral">
+        <h3><?php echo $t['carrito']; ?></h3>
+        <div id="carrito-lista"></div>
+        <p id="carrito-total"><?php echo $t['total_label']; ?>0 €</p>
+        <button id="btn-vaciar" type="button"><?php echo $t['vaciar']; ?></button>
+        <button id="btn-finalizar" type="button"><?php echo $t['finalizar']; ?></button>
+        <p id="mensaje-compra"></p>
+    </aside>
 
     <script>
         window.textosCarrito = <?php echo json_encode([
