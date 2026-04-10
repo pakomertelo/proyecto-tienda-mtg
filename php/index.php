@@ -143,7 +143,7 @@ if ($rol === 'admin') {
         <hr>
         <h2><?php echo sprintf($t['cartas_disponibles'], count($cartas)); ?></h2>
 
-        <div class="productos-grid bento-grid">
+        <div class="productos-grid">
             <?php foreach ($cartas as $carta): ?>
                 <article class="producto-card">
                     <img src="../img/<?php echo $carta['imagen']; ?>"
