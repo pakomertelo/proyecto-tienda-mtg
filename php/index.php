@@ -2,83 +2,83 @@
     session_start();
     require_once __DIR__ . '/valoraciones.php';
 
-    if (!isset($_SESSION['username'])) {
-        header('Location: login.php');
-        exit;
-    }
+if (!isset($_SESSION['username'])) {
+    header('Location: login.php');
+    exit;
+}
 
-    $idioma = $_COOKIE['idioma'] ?? 'es';
-    $tema = $_COOKIE['tema'] ?? 'oscuro';
-    $tamano = $_COOKIE['tamano_fuente'] ?? 'normal';
+$idioma = $_COOKIE['idioma'] ?? 'es';
+$tema = $_COOKIE['tema'] ?? 'oscuro';
+$tamano = $_COOKIE['tamano_fuente'] ?? 'normal';
 
-    $textos = [
-        'es' => [
-            'titulo' => 'Tienda de Cartas Magic the Gathering',
-            'titulo_pagina' => 'Tienda Magic - Cartas en venta',
-            'carrito' => 'Carrito',
-            'deseos' => 'Lista de deseos',
-            'preferencias' => 'Preferencias',
-            'cerrar_sesion' => 'Cerrar sesión',
-            'anadir_carrito' => 'Añadir al carrito',
-            'anadir_deseados' => 'Añadir a deseados',
-            'finalizar' => 'Finalizar compra',
-            'vaciar' => 'Vaciar carrito',
-            'cartas_disponibles' => 'Cartas disponibles (%d)',
-            'foto' => 'Foto',
-            'nombre_carta' => 'Nombre de la carta',
-            'precio' => 'Precio (€)',
-            'bienvenida_usuario' => 'Bienvenido, %s.',
-            'bienvenida_admin' => 'Bienvenido, admin. Has iniciado sesión como administrador.',
-            'carrito_vacio' => 'Carrito vacío.',
-            'producto' => 'Producto',
-            'precio_corto' => 'Precio',
-            'cantidad' => 'Cantidad',
-            'subtotal' => 'Subtotal',
-            'acciones' => 'Acciones',
-            'eliminar' => 'Eliminar',
-            'total_label' => 'Total: ',
-            'compra_finalizada' => 'Compra finalizada el ',
-            'ultima_compra' => 'Última compra: '
-        ],
-        'en' => [
-            'titulo' => 'Magic the Gathering Store',
-            'titulo_pagina' => 'Magic Store - Cards on sale',
-            'carrito' => 'Cart',
-            'deseos' => 'Wishlist',
-            'preferencias' => 'Preferences',
-            'cerrar_sesion' => 'Log out',
-            'anadir_carrito' => 'Add to cart',
-            'anadir_deseados' => 'Add to wishlist',
-            'finalizar' => 'Checkout',
-            'vaciar' => 'Clear cart',
-            'cartas_disponibles' => 'Available cards (%d)',
-            'foto' => 'Photo',
-            'nombre_carta' => 'Card name',
-            'precio' => 'Price (€)',
-            'bienvenida_usuario' => 'Welcome, %s.',
-            'bienvenida_admin' => 'Welcome, admin. You are logged in as administrator.',
-            'carrito_vacio' => 'Cart is empty.',
-            'producto' => 'Product',
-            'precio_corto' => 'Price',
-            'cantidad' => 'Quantity',
-            'subtotal' => 'Subtotal',
-            'acciones' => 'Actions',
-            'eliminar' => 'Remove',
-            'total_label' => 'Total: ',
-            'compra_finalizada' => 'Purchase completed on ',
-            'ultima_compra' => 'Last purchase: '
-        ]
-    ];
+$textos = [
+    'es' => [
+        'titulo' => 'Tienda de Cartas Magic the Gathering',
+        'titulo_pagina' => 'Tienda Magic - Cartas en venta',
+        'carrito' => 'Carrito',
+        'deseos' => 'Lista de deseos',
+        'preferencias' => 'Preferencias',
+        'cerrar_sesion' => 'Cerrar sesión',
+        'anadir_carrito' => 'Añadir al carrito',
+        'anadir_deseados' => 'Añadir a deseados',
+        'finalizar' => 'Finalizar compra',
+        'vaciar' => 'Vaciar carrito',
+        'cartas_disponibles' => 'Cartas disponibles (%d)',
+        'foto' => 'Foto',
+        'nombre_carta' => 'Nombre de la carta',
+        'precio' => 'Precio (€)',
+        'bienvenida_usuario' => 'Bienvenido, %s.',
+        'bienvenida_admin' => 'Bienvenido, admin. Has iniciado sesión como administrador.',
+        'carrito_vacio' => 'Carrito vacío.',
+        'producto' => 'Producto',
+        'precio_corto' => 'Precio',
+        'cantidad' => 'Cantidad',
+        'subtotal' => 'Subtotal',
+        'acciones' => 'Acciones',
+        'eliminar' => 'Eliminar',
+        'total_label' => 'Total: ',
+        'compra_finalizada' => 'Compra finalizada el ',
+        'ultima_compra' => 'Última compra: '
+    ],
+    'en' => [
+        'titulo' => 'Magic the Gathering Store',
+        'titulo_pagina' => 'Magic Store - Cards on sale',
+        'carrito' => 'Cart',
+        'deseos' => 'Wishlist',
+        'preferencias' => 'Preferences',
+        'cerrar_sesion' => 'Log out',
+        'anadir_carrito' => 'Add to cart',
+        'anadir_deseados' => 'Add to wishlist',
+        'finalizar' => 'Checkout',
+        'vaciar' => 'Clear cart',
+        'cartas_disponibles' => 'Available cards (%d)',
+        'foto' => 'Photo',
+        'nombre_carta' => 'Card name',
+        'precio' => 'Price (€)',
+        'bienvenida_usuario' => 'Welcome, %s.',
+        'bienvenida_admin' => 'Welcome, admin. You are logged in as administrator.',
+        'carrito_vacio' => 'Cart is empty.',
+        'producto' => 'Product',
+        'precio_corto' => 'Price',
+        'cantidad' => 'Quantity',
+        'subtotal' => 'Subtotal',
+        'acciones' => 'Actions',
+        'eliminar' => 'Remove',
+        'total_label' => 'Total: ',
+        'compra_finalizada' => 'Purchase completed on ',
+        'ultima_compra' => 'Last purchase: '
+    ]
+];
 
-    $t = $textos[$idioma] ?? $textos['es'];
+$t = $textos[$idioma] ?? $textos['es'];
 
-    $usuario = $_SESSION['username'];
-    $rol = $_SESSION['rol'] ?? 'cliente';
+$usuario = $_SESSION['username'];
+$rol = $_SESSION['rol'] ?? 'cliente';
 
-    $mensajeBienvenida = sprintf($t['bienvenida_usuario'], htmlspecialchars($usuario));
-    if ($rol === 'admin') {
-        $mensajeBienvenida = $t['bienvenida_admin'];
-    }
+$mensajeBienvenida = sprintf($t['bienvenida_usuario'], htmlspecialchars($usuario));
+if ($rol === 'admin') {
+    $mensajeBienvenida = $t['bienvenida_admin'];
+}
 
     $cartas = [
         ['id' => 1, 'nombre' => 'Aloy, Savior of Meridian', 'precio' => 29.50, 'imagen' => 'Aloy, Savior of Meridian.jpg'],
@@ -122,11 +122,13 @@
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars($idioma); ?>">
+
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($t['titulo_pagina']); ?></title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body class="<?php echo htmlspecialchars($tema); ?> <?php echo 'fuente-' . htmlspecialchars($tamano); ?>">
     <div class="contenedor">
         <h1><?php echo $t['titulo']; ?></h1>
@@ -193,7 +195,7 @@
     </aside>
 
     <script>
-        window.textosCarrito = <?php echo json_encode([
+    window.textosCarrito = <?php echo json_encode([
             'carrito_vacio' => $t['carrito_vacio'],
             'producto' => $t['producto'],
             'precio' => $t['precio_corto'],
@@ -206,7 +208,9 @@
             'ultima_compra' => $t['ultima_compra']
         ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); ?>;
     </script>
+
     <script src="js/tienda.js"></script>
     <script src="js/valoraciones.js"></script>
 </body>
+
 </html>

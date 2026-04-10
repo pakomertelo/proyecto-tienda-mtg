@@ -134,19 +134,16 @@ p {
 
 .bento-grid .producto-card:nth-child(4n + 1),
 .bento-grid .producto-card:nth-child(7n + 3) {
-    grid-column: span 1;
+    grid-column: span 2;
 }
 
 .producto-card {
-    background: #1e293b;
-    color: #e2e8f0;
-    border: 1px solid #334155;
+    background: #ffffff;
+    color: #111827;
+    border: 1px solid #e5e7eb;
     border-radius: 14px;
     padding: 14px;
     box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
-    min-height: 470px;
-    display: flex;
-    flex-direction: column;
 }
 
 .producto-img {
