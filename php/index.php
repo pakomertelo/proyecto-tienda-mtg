@@ -141,15 +141,61 @@
         <hr>
         <h2><?php echo sprintf($t['cartas_disponibles'], count($cartas)); ?></h2>
 
-        <div class="productos-grid">
-            <?php foreach ($cartas as $carta): ?>
-                <article class="producto-card">
-                    <img src="../img/<?php echo $carta['imagen']; ?>"
-                        alt="<?php echo htmlspecialchars($carta['nombre']); ?>"
-                        class="producto-img">
-
-                    <h3><?php echo htmlspecialchars($carta['nombre']); ?></h3>
-                    <p class="precio-card"><?php echo number_format($carta['precio'], 2, ',', '.'); ?> €</p>
+        <div class="table-wrapper">
+            <table class="tabla-productos">
+                <thead>
+                    <tr>
+                        <th><?php echo $t['foto']; ?></th>
+                        <th><?php echo $t['nombre_carta']; ?></th>
+                        <th><?php echo $t['precio']; ?></th>
+                        <th>Valoración</th>
+                        <th><?php echo $t['carrito']; ?></th>
+                        <th><?php echo $t['deseos']; ?></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($cartas as $carta): ?>
+                        <tr>
+                            <td>
+                                <img src="../img/<?php echo $carta['imagen']; ?>"
+                                    alt="<?php echo htmlspecialchars($carta['nombre']); ?>"
+                                    width="80">
+                            </td>
+                            <td><?php echo htmlspecialchars($carta['nombre']); ?></td>
+                            <td><?php echo number_format($carta['precio'], 2, ',', '.'); ?></td>
+                            <td>
+                                <p id="valoracion-<?php echo $carta['id']; ?>" class="valoracion-texto">
+                                    <?php
+                                        $resumen = $resumenValoraciones[$carta['id']] ?? ['total_votos' => 0, 'media' => 0];
+                                        echo htmlspecialchars(textoValoracion($resumen));
+                                    ?>
+                                </p>
+                                <form class="form-voto" data-id="<?php echo $carta['id']; ?>">
+                                    <select name="cantidad" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>
+                                        <option value="1">1 ★</option>
+                                        <option value="2">2 ★</option>
+                                        <option value="3">3 ★</option>
+                                        <option value="4">4 ★</option>
+                                        <option value="5" selected>5 ★</option>
+                                    </select>
+                                    <button type="submit" <?php echo !empty($votosUsuario[$carta['id']]) ? 'disabled' : ''; ?>>Votar</button>
+                                </form>
+                            </td>
+                            <td>
+                                <button type="button" class="btn-carrito" data-nombre="<?php echo htmlspecialchars($carta['nombre']); ?>" data-precio="<?php echo $carta['precio']; ?>"><?php echo $t['anadir_carrito']; ?></button>
+                            </td>
+                            <td>
+                                <form action="anadirDeseo.php" method="post">
+                                    <input type="hidden" name="nombre" value="<?php echo htmlspecialchars($carta['nombre']); ?>">
+                                    <input type="hidden" name="precio" value="<?php echo $carta['precio']; ?>">
+                                    <button type="submit"><?php echo $t['anadir_deseados']; ?></button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
 
                     <p id="valoracion-<?php echo $carta['id']; ?>" class="valoracion-texto">
                         <?php
