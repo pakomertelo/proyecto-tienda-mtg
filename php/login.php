@@ -55,7 +55,6 @@
                 ':rol' => $rol,
             ]);
         } catch (Throwable $e) {
-            // Si la BD no está preparada todavía, no bloqueamos el login.
         }
     }
 
@@ -83,11 +82,13 @@
 
 <!DOCTYPE html>
 <html lang="<?php echo htmlspecialchars($idioma); ?>">
+
 <head>
     <meta charset="UTF-8">
     <title><?php echo htmlspecialchars($t['titulo']); ?></title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body class="<?php echo htmlspecialchars($tema); ?> <?php echo 'fuente-' . htmlspecialchars($tamano); ?>">
     <div class="contenedor">
         <h1><?php echo htmlspecialchars($t['titulo']); ?></h1>
@@ -118,4 +119,5 @@
         </ul>
     </div>
 </body>
+
 </html>
